@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-
+import { Client } from "pg";
 import filePath from "./filePath";
 
 // loading in some dummy items into the database
@@ -19,6 +19,8 @@ dotenv.config();
 
 // use the environment variable PORT, or 4000 as a fallback
 const PORT_NUMBER = process.env.PORT ?? 4000;
+
+const client = new Client({ database: "injectiondb" })
 
 interface DbItem {
 
