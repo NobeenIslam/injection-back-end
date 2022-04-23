@@ -26,7 +26,8 @@ interface DbItem {
 
 // API info page
 app.get("/", (req, res) => {
-
+  const pathToFile = filePath("../public/index.html");
+  res.sendFile(pathToFile);
 });
 
 // GET /items
