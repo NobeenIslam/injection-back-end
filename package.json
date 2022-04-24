@@ -2,8 +2,8 @@
   "name": "injection",
   "version": "0.0.1",
   "scripts": {
-    "start": "ts-node src",
-    "start:dev": "ts-node-dev src"
+    "start": "node dist/server.js",
+    "start:dev": "ts-node-dev src/server.ts"
   },
   "author": "",
   "license": "CC-BY-NC-ND-4.0",
