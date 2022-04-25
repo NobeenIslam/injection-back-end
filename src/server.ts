@@ -32,30 +32,13 @@ app.get("/", (req, res) => {
   res.sendFile(pathToFile);
 });
 
-// GET /items
-app.get("/items", (req, res) => {
+app.get<{ item: string }, {}, {}>("/:item", (req, res) => {
+  const item = req.params.item
+  console.log(item)
 
-});
+})
 
-// POST /items
-app.post<{}, {}, DbItem>("/items", (req, res) => {
 
-});
-
-// GET /items/:id
-app.get<{ id: string }>("/items/:id", (req, res) => {
-
-});
-
-// DELETE /items/:id
-app.delete<{ id: string }>("/items/:id", (req, res) => {
-
-});
-
-// PATCH /items/:id
-app.patch<{ id: string }, {}, Partial<DbItem>>("/items/:id", (req, res) => {
-
-});
 
 app.listen(PORT_NUMBER, () => {
   console.log(`Server is listening on port ${PORT_NUMBER}!`);
