@@ -18,13 +18,19 @@ app.use(cors());
 dotenv.config();
 
 // use the environment variable PORT, or 4000 as a fallback
-const PORT_NUMBER = process.env.PORT ?? 4000;
+const PORT_NUMBER = process.env.PORT
 
-const client = new Client({ database: "injectiondb" })
-
-interface DbItem {
-
+if (!process.env.DATABASE_URL) {
+  throw "No DATABASE_URL env var!  Have you made a .env file?  And set up dotenv?";
 }
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
 
 // API info page
 app.get("/", (req, res) => {
@@ -32,13 +38,13 @@ app.get("/", (req, res) => {
   res.sendFile(pathToFile);
 });
 
-app.get<{ item: string }, {}, {}>("/:item", (req, res) => {
+app.get<{ item: string }, {}, {}>("/:item", async (req, res) => {
+  await client.connect()
   const item = req.params.item
   console.log(item)
+  await client.end()
 
 })
-
-
 
 app.listen(PORT_NUMBER, () => {
   console.log(`Server is listening on port ${PORT_NUMBER}!`);
