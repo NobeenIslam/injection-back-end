@@ -31,6 +31,7 @@ const client = new Client({
   },
 });
 
+client.connect()
 
 // API info page
 app.get("/", (req, res) => {
@@ -39,10 +40,19 @@ app.get("/", (req, res) => {
 });
 
 app.get<{ item: string }, {}, {}>("/:item", async (req, res) => {
-  await client.connect()
   const item = req.params.item
-  console.log(item)
-  await client.end()
+  const selectTool = `in
+  SELECT * from inventory
+  WHERE itemname like $1
+  `
+
+  try {
+    const toolRes = await client.query(selectTool, [`%${item}%`])
+    res.status(200).send(toolRes.rows)
+  } catch (err) {
+    console.log(err)
+    res.status(400).send("You messed up mate")
+  }
 
 })
 
